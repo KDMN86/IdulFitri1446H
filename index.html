@@ -112,11 +112,22 @@
           opacity: 1;
         }
       }
+      /* Gaya tombol untuk memulai musik */
+      #playMusic {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #ff6600;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
-    <!-- Audio latar musik menggunakan file MP3 -->
-    <audio id="background-music" autoplay loop>
+    <!-- Audio latar musik menggunakan file MP3, tanpa autoplay agar tidak diblokir di mobile -->
+    <audio id="background-music" loop>
       <source src="./Takbiran mekah .mp3" type="audio/mpeg" />
       Browser Anda tidak mendukung elemen audio.
     </audio>
@@ -131,6 +142,8 @@
         semua.
       </p>
       <p>Keluarga Besar Ujang Rahmana</p>
+      <!-- Tombol untuk memulai musik -->
+      <button id="playMusic">Putar Musik</button>
 
       <!-- Daftar gambar tampil maksimal -->
       <div class="images">
@@ -148,42 +161,47 @@
     </div>
 
     <script>
+      // Tombol untuk memulai musik
+      const playMusicButton = document.getElementById("playMusic");
+      const audio = document.getElementById("background-music");
+
+      playMusicButton.addEventListener("click", function () {
+        audio
+          .play()
+          .then(() => {
+            // Sembunyikan tombol setelah musik mulai dimainkan
+            playMusicButton.style.display = "none";
+          })
+          .catch((error) => {
+            console.log("Error memulai musik: ", error);
+          });
+      });
+
       // Modal lightbox
-      const modal = document.getElementById('modal');
-      const modalImg = document.getElementById('modalImg');
-      const images = document.querySelectorAll('.images img');
-      const modalClose = document.getElementById('modalClose');
+      const modal = document.getElementById("modal");
+      const modalImg = document.getElementById("modalImg");
+      const images = document.querySelectorAll(".images img");
+      const modalClose = document.getElementById("modalClose");
 
       images.forEach((img) => {
-        img.addEventListener('click', () => {
-          modal.style.display = 'block';
+        img.addEventListener("click", () => {
+          modal.style.display = "block";
           modalImg.src = img.src;
           // Atur tinggi modal content agar sama dengan tinggi layar, lebar sesuai gambar
-          modalImg.style.height = '100vh';
-          modalImg.style.width = 'auto';
+          modalImg.style.height = "100vh";
+          modalImg.style.width = "auto";
         });
       });
 
-      modalClose.addEventListener('click', () => {
-        modal.style.display = 'none';
+      modalClose.addEventListener("click", () => {
+        modal.style.display = "none";
       });
 
       // Tutup modal ketika klik di luar gambar
-      modal.addEventListener('click', (e) => {
+      modal.addEventListener("click", (e) => {
         if (e.target === modal) {
-          modal.style.display = 'none';
+          modal.style.display = "none";
         }
-      });
-
-      // Memastikan audio diputar saat halaman termuat
-      document.addEventListener('DOMContentLoaded', function () {
-        var audio = document.getElementById('background-music');
-        audio.play().catch(function (error) {
-          console.log(
-            'Autoplay tidak berhasil. Pengguna harus berinteraksi: ',
-            error
-          );
-        });
       });
     </script>
   </body>
